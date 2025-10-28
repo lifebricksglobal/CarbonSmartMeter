@@ -1,3 +1,4 @@
+# pyproject.toml
 [project]
 name = "carbon-smart-meter"
 version = "0.1.0"
@@ -6,7 +7,7 @@ authors = [{ name = "Carbon Credits Marketplace", email = "team@ccmarketplace.io
 requires-python = ">=3.9"
 dependencies = [
     "pydantic>=2.0",
-    "nacl>=1.5",
+    "pynacl>=1.5",
     "boto3>=1.28",
     "azure-identity>=1.15",
     "azure-storage-blob>=12.19",
