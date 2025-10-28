@@ -1,10 +1,10 @@
 # src/carbon_smart_meter/core/offset.py
 """
-Offset Estimation Engine (Privacy-First, Global Coverage)
+Offset Estimation Engine (Privacy First, Global Coverage)
 
-GDPR & MiCA-compliant: Primary storage in AWS (EU or SG), encrypted Azure backup.
+GDPR & MiCA compliant: Primary storage in AWS (EU or SG), encrypted Azure backup.
 
-Estimates CO₂ avoided using verified kWh + region-specific grid intensity.
+Estimates CO₂ avoided using verified kWh + region specific grid intensity.
 - NO GPS: User selects region via dropdown
 - Fallback: Conservative global average
 - Covers 90%+ of world population
@@ -23,11 +23,11 @@ GRID_INTENSITY = {
     # High-accuracy regions
     "EU": 0.296,        # EU-27 average
     "US": 0.385,        # US EIA
-    "NZ": 0.110,        # NZ hydro-heavy
+    "NZ": 0.110,        # NZ hydro heavy
     "AU": 0.680,        # Australia coal
     "SG": 0.420,        # Singapore gas
-    "IN": 0.710,        # India (coal-heavy, 2024) 
-    "CN": 0.570,        # China (coal-dominant, 2024)
+    "IN": 0.710,        # India (coal heavy, 2024) 
+    "CN": 0.570,        # China (coal dominant, 2024)
     "LATAM": 0.180,     # Latin America average (hydro + gas)
     "MENA": 0.490,      # Middle East & North Africa (oil/gas)
     "SSA": 0.520,       # Sub-Saharan Africa (mixed, coal/biomass)
@@ -55,7 +55,7 @@ class OffsetTotals(BaseModel):
     wallet_co2_kg: float = 0.0
 
 
-# === SECURE, REGION-AWARE STORAGE ===
+# === SECURE, REGION AWARE STORAGE ===
 class SecureOffsetDB:
     def __init__(self, user_region: str):
         self.user_region = user_region
