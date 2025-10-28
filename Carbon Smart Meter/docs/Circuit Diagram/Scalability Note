@@ -1,0 +1,10 @@
+## Scalability: From Portable to Farm, You’re Covered
+
+| Installation | How It Works |
+|-------------|--------------|
+| Single Panel | 1 × ESP32 → USB-C → App |
+| Portable Kit | Same flow, rugged case |
+| Solar Farm | 1 Gateway aggregates 100+ panels → signs batch |
+| Microgrid | Central node → same Ed25519 + threshold logic |
+
+Same code. Same security. Same rewards, just at scale.
