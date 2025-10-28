@@ -5,13 +5,13 @@ python<br>from pydantic import BaseModel<br><br>class Measurement(BaseModel):<br
 VIR Data Capture & kWh Conversion (Hard-Wired Only)
 
 Receives real-time VIR (Voltage, Current, Resistance) from microcontroller
-via **Type-C USB or 12V charging cable** (mobile devices).
+via Type-C USB or 12V charging cable (mobile devices).
 
 - Converts to kWh using P = V × I
 - Verifies Ed25519 signature from device
 - Stores timestamped, tamper-proof readings
 - Enforces 9 kWh/day cap
-- **No Bluetooth — cable-only for security & accuracy**
+- No Bluetooth — cable-only for security & accuracy
 """
 
 import time
