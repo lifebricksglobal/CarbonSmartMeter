@@ -1,0 +1,2 @@
+toml<br>[package]<br>name = "carbon-smart-meter-program"<br>version = "0.1.0"<br>edition = "2021"<br><br>[lib]<br>crate-type = ["cdylib", "lib"]<br><br>[dependencies]<br>solana-program = "1.18"<br>borsh = "0.10"<br>borsh-derive = "0.10"<br>
+
