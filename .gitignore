@@ -232,3 +232,8 @@ wallets/
 *.log
 logs/
 data/
+
+# Raw cable data
+cable_logs/
+*.bin
+*.dat
