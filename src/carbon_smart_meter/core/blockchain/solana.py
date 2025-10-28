@@ -1,15 +1,14 @@
 # src/carbon_smart_meter/blockchain/solana.py
 """
-App-to-Device Tamper-Proof Protocol → Solana Submission
+Solana Submission (Hard Wired, Tamper Proof)
 
-- Verifies Ed25519 signature from device
-- Submits kWh to Solana BPF program
-- Hard-wired only
+Submits verified kWh to Solana BPF program via cable only flow.
 """
 
 from typing import Optional
 from solana.rpc.api import Client
 from solana.transaction import Transaction
+from solana.system_program import SYS_PROGRAM_ID
 from solana.publickey import PublicKey
 from solana.keypair import Keypair
 from nacl.signing import VerifyKey
@@ -18,9 +17,8 @@ import struct
 
 # === CONFIG ===
 SOLANA_RPC = "https://api.devnet.solana.com"
-PROGRAM_ID = PublicKey("YOUR_PROGRAM_ID_HERE")  # Replace after deploy
+PROGRAM_ID = PublicKey("11111111111111111111111111111111")  # Replace after deploy
 client = Client(SOLANA_RPC)
-
 
 class SolanaSubmitter:
     def __init__(self, wallet: Keypair):
@@ -47,7 +45,7 @@ class SolanaSubmitter:
                     {"pubkey": self.wallet.public_key, "is_signer": True, "is_writable": True},
                     {"pubkey": PublicKey(0), "is_signer": False, "is_writable": True},
                     {"pubkey": PublicKey(0), "is_signer": False, "is_writable": True},
-                    {"pubkey": PublicKey("SysvarC1ock11111111111111111111111111111111"), "is_signer": False, "is_writable": False},
+                    {"pubkey": SYS_PROGRAM_ID, "is_signer": False, "is_writable": False},
                 ],
                 "program_id": PROGRAM_ID,
                 "data": list(data),
@@ -56,7 +54,7 @@ class SolanaSubmitter:
 
         try:
             resp = client.send_transaction(tx, self.wallet)
-            return resp["result"]
+            return resp.get("result")
         except Exception as e:
             print(f"Submit failed: {e}")
             return None
