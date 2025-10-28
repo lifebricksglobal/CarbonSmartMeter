@@ -60,6 +60,12 @@ Adapter layer: plug in any L1 (blockchain/adapter.py)
 Rust BPF program: on-chain logic (examples/solana_program/)  
 Python backend: off-chain processing (src/carbon_smart_meter/)
 
+## Sustainable Payout Model
+- 9 kWh/day cap per device, future proofing retro fit customers
+- Rewards tied to the market cost of electricity in the given region. So 10–30% of regional electricity price paid in rewards
+- Inverse token scaling: early users get more rewards
+- Revenue backed: brokerage and verification fees, anonymized data on renewable energy generation sales and hardware sales margin.
+
 ## Get Started
 pip install -e .  
 python examples1/run_solana.py
