@@ -1,0 +1,2 @@
+rust<br>use solana_program::{<br>    account_info::AccountInfo,<br>    entrypoint::entrypoint,<br>    entrypoint::ProgramResult,<br>    pubkey::Pubkey,<br>};<br><br>entrypoint!(process_instruction);<br><br>pub fn process_instruction(<br>    _program_id: &Pubkey,<br>    _accounts: &[AccountInfo],<br>    _instruction_data: &[u8],<br>) -> ProgramResult {<br>    // TODO: Parse kWh, verify signature, mint $CARBON<br>    Ok(())<br>}<br>
+
