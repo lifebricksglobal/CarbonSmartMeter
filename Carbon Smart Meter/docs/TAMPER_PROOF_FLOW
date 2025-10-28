@@ -28,7 +28,7 @@ No private key ever leaves device.
 Real-World Analogy. 
 
 Ed25519 = User device fingerprint.
-Anyone can see the print (public key), but only the user device or fingerprint can create it.
+Anyone can see the print (public key), but only the user device / fingerprint can create it.
 
 
 
