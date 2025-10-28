@@ -1,0 +1,34 @@
+[Microcontroller]
+   │
+   ├── Signs VIR + device_id → Ed25519
+   │
+   ▼ (USB-C Cable)
+[Mobile Web App]
+   │
+   ├── Re-verifies signature
+   ├── Converts to kWh
+   ├── Caps at 9 kWh/day
+   ├── Stores in AWS/Azure (GDPR)
+   ├── Calculates CO₂ offset
+   │
+   ▼ (HTTPS)
+[Backend + Solana]
+
+How it works.
+
+[Device] → Private Key → Signs (device_id + VIR + timestamp) → Signature
+                                                              ↓
+                                                [App] → Public Key → Verifies
+
+On first boot: Device generates Ed25519 keypair.
+Every reading: Signs data with the private key.
+App & Solana: Verify with public key.
+No private key ever leaves device.
+
+Real-World Analogy. 
+
+Ed25519 = User device fingerprint.
+Anyone can see the print (public key), but only the user device or fingerprint can create it.
+
+
+
