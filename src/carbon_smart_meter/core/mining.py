@@ -29,6 +29,8 @@ azure_blob_client = azure_blob.BlobServiceClient(
 )
 
 # === MODELS ===
+from pydantic import ConfigDict
+
 class VIRPacket(BaseModel):
     device_id: bytes = Field(..., min_length=32, max_length=32)
     voltage: float
@@ -37,8 +39,7 @@ class VIRPacket(BaseModel):
     timestamp: int
     signature: bytes = Field(..., min_length=64, max_length=64)
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 class EnergyReading(BaseModel):
     device_id: bytes
