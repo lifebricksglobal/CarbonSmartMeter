@@ -1,11 +1,11 @@
 # src/carbon_smart_meter/core/mining.py
 """
-VIR Data Capture & kWh Conversion (Hard-Wired, Type-C / 12V Cable)
+VIR Data Capture & kWh Conversion (Hard Wired, USB/ Type-C / 12V Cable)
 
-GDPR & MiCA-compliant: Primary storage in AWS (EU or SG based on user_region),
+GDPR & MiCA compliant: Primary storage in AWS (EU or SG based on user_region),
 encrypted backup in Azure.
 
-Receives real-time VIR from microcontroller via cable → converts to kWh → verifies Ed25519 → stores.
+Receives real time VIR from microcontroller via cable → converts to kWh → verifies Ed25519 → stores.
 """
 
 import time
@@ -71,12 +71,12 @@ def vir_to_kwh(voltage: float, current: float, duration_sec: float) -> float:
     return energy_wh / 1000
 
 
-# === SECURE, REGION-AWARE STORAGE ===
+# === SECURE, REGION AWARE STORAGE ===
 class SecureEnergyDB:
     def __init__(self, user_region: str, azure_container: str = "energy-backup"):
         self.azure_container = azure_container
 
-        # === REGION-AWARE AWS BUCKET ===
+        # === REGION AWARE AWS BUCKET ===
         if user_region == "EU":
             self.aws_bucket = "ccm-energy-eu"      # GDPR/MiCA compliant (EU)
         else:

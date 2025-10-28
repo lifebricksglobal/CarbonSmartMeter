@@ -77,6 +77,12 @@ python examples1/run_solana.py
 - CORSIA/IATA compliant design for aviation grade offset standards
 - Plenty of upside to develop retrofit products that can be shipped and sold globally.
 
+## GDPR & MiCA Compliance
+- Primary storage: AWS S3 (eu-west-1), AES 256 encryption
+- Backup: Azure Blob (encrypted, GDPR scope)
+- Data residency: EU only
+- Right to be forgotten: Soft delete + 30 day retention
+
 Built by Carbon Credits Marketplace (CCM)  
 Powered by rewards  
 Anchored in real offsets  

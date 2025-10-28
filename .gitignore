@@ -237,3 +237,9 @@ data/
 cable_logs/
 *.bin
 *.dat
+
+# Cloud credentials
+.aws/
+.azure/
+*.pem
+*.json
