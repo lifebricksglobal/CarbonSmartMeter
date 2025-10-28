@@ -1,28 +1,26 @@
-# src/carbon_smart_meter/core/mining.py
+# src/carbon_smart_meter/core/registration.py
 """
-VIR Data Capture & kWh Conversion (Hard Wired, USB/ Type-C / 12V Cable)
+Device Registration & Wallet Binding (Hard-Wired Security)
 
-GDPR & MiCA compliant: Primary storage in AWS (EU or SG based on user_region),
-encrypted backup in Azure.
+GDPR & MiCA-compliant: Primary storage in AWS (EU or SG), encrypted Azure backup.
 
-Receives real time VIR from microcontroller via cable → converts to kWh → verifies Ed25519 → stores.
+- Device generates Ed25519 keypair on first boot
+- Sends public key + device_id to backend via secure cable
+- Backend binds public key → wallet address
+- Enforces 1 device = 1 wallet
+- Prevents spoofing, duplicates, and wallet swaps
 """
 
-import time
-import struct
-from typing import Optional
+from typing import Optional, Dict
 from pydantic import BaseModel, Field
-from nacl.signing import VerifyKey
+from nacl.signing import SigningKey, VerifyKey
 from nacl.exceptions import BadSignatureError
 import boto3
 import azure.identity
 import azure.storage.blob as azure_blob
+import time
 
-# === CONFIG ===
-DAILY_KWH_CAP = 9.0
-POWER_SAMPLE_INTERVAL = 1.0
-
-# === AZURE (GLOBAL BACKUP) ===
+# === AZURE BACKUP ===
 azure_cred = azure.identity.DefaultAzureCredential()
 azure_blob_client = azure_blob.BlobServiceClient(
     account_url="https://backupstorage.blob.core.windows.net",
@@ -30,66 +28,31 @@ azure_blob_client = azure_blob.BlobServiceClient(
 )
 
 # === MODELS ===
-class VIRPacket(BaseModel):
+class DeviceRegistrationRequest(BaseModel):
     device_id: bytes = Field(..., min_length=32, max_length=32)
-    voltage: float
-    current: float
-    resistance: float
-    timestamp: int
+    public_key: bytes = Field(..., min_length=32, max_length=32)
     signature: bytes = Field(..., min_length=64, max_length=64)
+    wallet_address: str
 
-    class Config:
-        arbitrary_types_allowed = True
-
-class EnergyReading(BaseModel):
+class DeviceBinding(BaseModel):
     device_id: bytes
-    kwh: float
-    timestamp: int
-    verified: bool
-    cable_type: str  # "type-c" or "12v"
-    user_region: str  # "EU" or "NON_EU"
+    public_key: bytes
+    wallet_address: str
+    registered_at: int
+    verified: bool = True
 
 
-# === ED25519 VERIFICATION ===
-def verify_packet(packet: VIRPacket, public_key: bytes) -> bool:
-    verify_key = VerifyKey(public_key)
-    signed_data = (
-        packet.device_id +
-        struct.pack("<fffq", packet.voltage, packet.current, packet.resistance, packet.timestamp)
-    )
-    try:
-        verify_key.verify(signed_data, packet.signature)
-        return True
-    except BadSignatureError:
-        return False
-
-
-# === kWh CONVERSION ===
-def vir_to_kwh(voltage: float, current: float, duration_sec: float) -> float:
-    power_watts = voltage * current
-    energy_wh = power_watts * (duration_sec / 3600)
-    return energy_wh / 1000
-
-
-# === SECURE, REGION AWARE STORAGE ===
-class SecureEnergyDB:
-    def __init__(self, user_region: str, azure_container: str = "energy-backup"):
-        self.azure_container = azure_container
-
-        # === REGION AWARE AWS BUCKET ===
-        if user_region == "EU":
-            self.aws_bucket = "ccm-energy-eu"      # GDPR/MiCA compliant (EU)
-        else:
-            self.aws_bucket = "ccm-energy-sg"      # Singapore (non-EU)
-
-        # AWS client (region auto-detected by bucket)
+# === SECURE, REGION-AWARE STORAGE ===
+class SecureRegistrationDB:
+    def __init__(self, user_region: str):
+        self.user_region = user_region
+        self.aws_bucket = "ccm-bindings-eu" if user_region == "EU" else "ccm-bindings-sg"
         self.s3 = boto3.client("s3")
 
-    def insert(self, reading: EnergyReading):
-        key = f"energy/{reading.device_id.hex()}/{reading.timestamp}.json"
-        data = reading.json().encode()
+    def insert(self, binding: DeviceBinding):
+        key = f"bindings/{binding.device_id.hex()}.json"
+        data = binding.json().encode()
 
-        # 1. Primary: AWS (EU or SG)
         self.s3.put_object(
             Bucket=self.aws_bucket,
             Key=key,
@@ -97,77 +60,89 @@ class SecureEnergyDB:
             ServerSideEncryption="AES256"
         )
 
-        # 2. Backup: Azure (encrypted)
         blob_client = azure_blob_client.get_blob_client(
-            container=self.azure_container, blob=key
+            container="registration-backup", blob=key
         )
         blob_client.upload_blob(data, overwrite=True, encryption_scope="gdpr-scope")
 
-        print(f"STORED: {reading.kwh:.6f} kWh → AWS ({self.aws_bucket}) + Azure")
 
+# === REGISTRATION MANAGER ===
+class RegistrationManager:
+    def __init__(self, db):
+        self.db = db
+        self.active_devices: Dict[bytes, DeviceBinding] = {}
 
-# === MAIN PROCESSOR ===
-class EnergyProcessor:
-    def __init__(self, user_region: str = "EU"):
-        self.user_region = user_region
-        self.db = SecureEnergyDB(user_region=user_region)
-        self.daily_usage = {}  # {(device_id, date): kwh_today}
-
-    def process_packet(
-        self,
-        packet: VIRPacket,
-        public_key: bytes,
-        cable_type: str = "type-c"
-    ) -> Optional[EnergyReading]:
-        if cable_type not in {"type-c", "12v"}:
+    def register_device(self, request: DeviceRegistrationRequest) -> Optional[DeviceBinding]:
+        if not self._verify_device_signature(request.device_id, request.public_key, request.signature):
             return None
 
-        # 1. Verify signature
-        if not verify_packet(packet, public_key):
+        if self.db.exists(device_id=request.device_id):
+            return None
+        if self.db.exists(public_key=request.public_key):
+            return None
+        if self.db.wallet_in_use(request.wallet_address):
             return None
 
-        # 2. Convert to kWh
-        kwh = vir_to_kwh(packet.voltage, packet.current, POWER_SAMPLE_INTERVAL)
-
-        # 3. Daily cap
-        today = packet.timestamp // 86400
-        key = (packet.device_id, today)
-        current_day_kwh = self.daily_usage.get(key, 0.0) + kwh
-
-        if current_day_kwh > DAILY_KWH_CAP:
-            kwh = max(0.0, DAILY_KWH_CAP - self.daily_usage.get(key, 0.0))
-            if kwh <= 0:
-                return None
-
-        # 4. Store with region
-        reading = EnergyReading(
-            device_id=packet.device_id,
-            kwh=kwh,
-            timestamp=packet.timestamp,
-            verified=True,
-            cable_type=cable_type,
-            user_region=self.user_region
+        binding = DeviceBinding(
+            device_id=request.device_id,
+            public_key=request.public_key,
+            wallet_address=request.wallet_address,
+            registered_at=int(time.time())
         )
-        self.db.insert(reading)
-        self.daily_usage[key] = current_day_kwh
 
-        return reading
+        self.db.insert(binding)
+        self.active_devices[request.device_id] = binding
+        return binding
+
+    def _verify_device_signature(self, device_id: bytes, public_key: bytes, signature: bytes) -> bool:
+        try:
+            verify_key = VerifyKey(public_key)
+            verify_key.verify(device_id, signature)
+            return True
+        except BadSignatureError:
+            return False
+
+    def get_binding(self, device_id: bytes) -> Optional[DeviceBinding]:
+        return self.active_devices.get(device_id)
+
+    def is_wallet_bound(self, wallet: str) -> bool:
+        return self.db.wallet_in_use(wallet)
 
 
-# === TEST (EU User) ===
-if __name__ == "__main__":
-    processor = EnergyProcessor(user_region="EU")
+# === MOCK DB (for testing) ===
+class MockRegistrationDB:
+    def __init__(self):
+        self.bindings = {}
+        self.wallet_set = set()
 
-    public_key = bytes.fromhex("a" * 64)
-    packet = VIRPacket(
-        device_id=bytes.fromhex("01" * 32),
-        voltage=12.0,
-        current=1.5,
-        resistance=8.0,
-        timestamp=int(time.time()),
-        signature=bytes(64)
+    def exists(self, device_id: Optional[bytes] = None, public_key: Optional[bytes] = None) -> bool:
+        if device_id:
+            return device_id in self.bindings
+        if public_key:
+            return any(b.public_key == public_key for b in self.bindings.values())
+        return False
+
+    def wallet_in_use(self, wallet: str) -> bool:
+        return wallet in self.wallet_set
+
+    def insert(self, binding: DeviceBinding):
+        self.bindings[binding.device_id] = binding
+        self.wallet_set.add(binding.wallet_address)
+
+    def get(self, device_id: bytes) -> Optional[DeviceBinding]:
+        return self.bindings.get(device_id)
+
+
+# === DEVICE-SIDE: Generate Keypair & Register ===
+def generate_device_registration(wallet_address: str) -> DeviceRegistrationRequest:
+    signing_key = SigningKey.generate()
+    public_key = signing_key.verify_key.encode()
+    device_id = b"0" * 32  # In real: hardware UID
+    signature = signing_key.sign(device_id).signature
+
+    return DeviceRegistrationRequest(
+        device_id=device_id,
+        public_key=public_key,
+        signature=signature,
+        wallet_address=wallet_address
     )
-
-    result = processor.process_packet(packet, public_key, "type-c")
-    if result:
-        print(f"MINED: {result.kwh:.6f} kWh → {result.user_region}")
