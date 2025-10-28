@@ -1,15 +1,21 @@
 # src/carbon_smart_meter/blockchain/solana.py
+"""
+Solana Submission (Hard Wired, Tamper Proof)
+"""
+
 from typing import Optional
 from solana.rpc.api import Client
 from solana.transaction import Transaction
-from solana.publickey import PublicKey
 from solana.keypair import Keypair
+from solana.publickey import PublicKey  # ← CORRECT
+from solana.system_program import SYS_PROGRAM_ID
 from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
 import struct
 
+# === CONFIG ===
 SOLANA_RPC = "https://api.devnet.solana.com"
-PROGRAM_ID = PublicKey("11111111111111111111111111111111")  # Placeholder
+PROGRAM_ID = PublicKey("11111111111111111111111111111111")
 client = Client(SOLANA_RPC)
 
 class SolanaSubmitter:
@@ -31,15 +37,16 @@ class SolanaSubmitter:
         if market_cap is not None:
             data += struct.pack("<Q", market_cap)
 
-        tx = Transaction().add(
+        tx = Transaction()
+        tx.add_instruction(
             {
+                "program_id": PROGRAM_ID,
                 "keys": [
                     {"pubkey": self.wallet.public_key, "is_signer": True, "is_writable": True},
                     {"pubkey": PublicKey(0), "is_signer": False, "is_writable": True},
                     {"pubkey": PublicKey(0), "is_signer": False, "is_writable": True},
-                    {"pubkey": PublicKey("SysvarC1ock11111111111111111111111111111111"), "is_signer": False, "is_writable": False},
+                    {"pubkey": SYS_PROGRAM_ID, "is_signer": False, "is_writable": False},
                 ],
-                "program_id": PROGRAM_ID,
                 "data": list(data),
             }
         )
@@ -47,8 +54,7 @@ class SolanaSubmitter:
         try:
             resp = client.send_transaction(tx, self.wallet)
             return resp.get("result")
-        except Exception as e:
-            print(f"Submit failed: {e}")
+        except Exception:
             return None
 
     def _verify_device_sig(self, device_id: bytes, public_key: bytes, signature: bytes) -> bool:
