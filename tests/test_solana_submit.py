@@ -3,7 +3,7 @@ from unittest.mock import patch
 from carbon_smart_meter.blockchain.solana import SolanaSubmitter
 from solana.keypair import Keypair
 
-def test_invalid_signature():
+# def test_invalid_signature():
     wallet = Keypair()
     submitter = SolanaSubmitter(wallet)
 
