@@ -1,2 +1,5 @@
 toml<br>[project]<br>name = "carbon-smart-meter"<br>version = "0.1.0"<br>requires-python = ">=3.9"<br>
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
