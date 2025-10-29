@@ -18,7 +18,7 @@ import azure.identity
 import azure.storage.blob as azure_blob
 
 # === CONFIG ===
-DAILY_KWH_CAP = 9.0
+DAILY_KWH_CAP = 1.5
 POWER_SAMPLE_INTERVAL = 1.0
 
 # === AZURE (GLOBAL BACKUP) ===
