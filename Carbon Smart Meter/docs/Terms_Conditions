@@ -1,0 +1,117 @@
+Terms & Conditions ("Terms") 
+
+Carbon Credits Marketplace (CCM)
+
+Effective Q4 2025
+
+The Terms govern your use of the Carbon Smart Meter website, web app, hardware products (including solar panels and VIR sensors), and
+related services (collectively, the "Services") provided by Carbon Credits Marketplace (CCM), a New Zealand founded entity. By accessing
+the Services, purchasing products, or interacting with us, you agree to these Terms. If you do not agree, do not use the Services. The 
+Services are available only to users who are at least 18 years old (or the legal age of majority in your jurisdiction).
+
+By using the Services, you represent and warrant that you meet this requirement.
+
+From time to time, we may update these Terms. Your continued use of the Services after updates constitutes acceptance of the changes. 
+We will notify you of material changes via the website or app.
+
+Binding Arbitration; Waiver of Jury Trial
+
+These Terms require that all disputes between you and CCM be resolved by binding arbitration. You agree to waive your right to a jury 
+trial or class action. Claims must be brought individually. For details, see the Arbitration Agreement below.
+
+Privacy
+
+Your privacy is paramount. See our Privacy Policy: 
+(https://github.com/lifebricksglobal/CarbonSmartMeter/blob/b820afb67f3b9affc2234352077c37b983ff92da/Carbon%20Smart%20Meter/docs/Privacy%20Policy) 
+for how we handle data (zero PII, anonymized RE data only). The Privacy Policy is incorporated into these Terms.
+
+Ownership of the Services
+
+All content, software, hardware designs, smart contracts, and services on the Services ("CCM Content") are owned by CCM or its licensors
+and protected by intellectual property laws. This includes graphics, code (e.g., open source Rust BPF contracts under Apache 2.0), trademarks
+and tokenized data products.You may not download, reproduce, or use CCM Content for commercial purposes without written permission. 
+You may not misuse CCM Content in ways that confuse consumers, disparage CCM, or infringe IP rights. If the Services assign a device ID 
+or on-chain designation, other than self custody wallets, you do not own it and we may change it at any time.
+
+Services Access and Restrictions
+
+You agree to use the Services only for lawful purposes. Prohibited activities include:
+
+  - Unlawful, abusive, harassing, or defamatory conduct.
+  - Uploading copyrighted material without permission.
+  - Collecting personal data about other users.
+  - Commercial use without approval (e.g., reselling hardware without license).
+  - Interfering with the Services (e.g., spoofing kWh data, tampering with VIR sensors).
+  - Using automated tools to scrape data or bypass restrictions.
+
+Accounts; Passwords; Wallets.
+
+To use the Services, you must bond a self-custodial wallet (e.g., via browser generation or Solflare integration). You are responsible for
+maintaining confidentiality of your private keys and wallet. CCM does not store, access, or manage your keys or funds. Rewards are sent directly
+on-chain. You agree to notify us immediately of any unauthorized access. CCM is not liable for losses from compromised wallets. 
+
+Hardware and Software Use
+
+- Hardware (Solar Panels, VIR Sensors): Products are sold "as is" with limited warranties (see separate Hardware Warranty). You must use them as 
+intended (e.g., physical connection for kWh mining). Any form of tampering voids rewards and warranties.
+- Software (Web App, Smart Contracts): Open source under Apache 2.0. You may modify for personal use but not for fraud (e.g., spoofing device IDs).
+- On-Chain Rewards: Reward Token emissions follow the halving schedule and caps (1.5 kWh/day max). wCARBON mints exclusively to CCM Treasury,
+no user access or redemption.
+- RE Data: Anonymized stats may be aggregated and sold; you consent to non identifiable contributions.
+
+You assume all risks for hardware use (e.g., weather damage, off-grid charging).
+
+Accuracy and Third-Party Links
+
+Services information (e.g., kWh calculations, grid factors) is provided "as is" and may contain errors. Verify independently. CCM disclaims liability
+for decisions based on Services data. Links to third party sites (e.g., DEXs like Raydium) are for convenience only. 
+CCM is not responsible for their content or practices.
+
+Mobile App and SDK
+
+The web app is mobile optimized (PWA). Use requires a compatible device and internet. You are responsible for data costs. Push notifications can be
+disabled in device settings. The Mobile SDK for OEM firmware is provided open source for integration (e.g., auto mining via USB-C). 
+OEMs must comply with these Terms.
+
+Disclaimers of Warranties
+
+THE SERVICES ARE PROVIDED "AS IS" WITHOUT WARRANTIES OF MERCHANTABILITY, FITNESS FOR PURPOSE, OR NON-NFRINGEMENT. CCM DOES NOT WARRANT AGAINST VIRUSES, 
+ERRORS, OR INTERRUPTIONS IN REWARD MINING OR ON-CHAIN TRANSACTIONS. Hardware warranties are limited to manufacturing defects (90 days). Software and 
+smart contracts are open-source "as is" with no guarantees on yields or Reward Token eligibility. You assume all risks for blockchain volatility, network 
+downtime, or regulatory changes (e.g., CORSIA updates).
+
+Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, CCM SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM USE
+OF THE SERVICES, INCLUDING LOST REWARDS, HARDWARE FAILURE, OR CARBON CREDIT INVALIDATION. CCM'S TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT YOU PAID FOR
+PRODUCTS OR SERVICES IN THE LAST 12 MONTHS. THIS APPLIES EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+Some jurisdictions do not allow exclusions, so this may not apply to you.
+
+Indemnification
+
+You agree to indemnify CCM against claims arising from your use of the Services, including violations of these Terms, IP infringement, or hardware misuse.
+
+Arbitration Agreement
+
+Any dispute arising from these Terms shall be resolved by binding arbitration under the American Arbitration Association rules in New Zealand 
+(or your jurisdiction if required). No class actions. You waive jury trials. CCM may seek injunctive relief in court for IP violations. 
+
+Governing Law
+
+These Terms are governed by New Zealand law, without regard to conflict of laws principles. Disputes shall be resolved exclusively in 
+New Zealand courts (except for arbitration). 
+
+Miscellaneous
+
+- Severability: Invalid provisions do not affect the rest.
+- Waiver: No waiver unless in writing.
+- Entire Agreement: These Terms supersede prior agreements.
+- Force Majeure: CCM not liable for events beyond control (e.g., solar eclipses, blockchain failures).
+- Export Controls: Products comply with export laws; you are responsible for compliance.
+
+Contact: [data@lifebricksglobal.com] 
+
+
+
+
+
