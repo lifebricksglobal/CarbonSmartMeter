@@ -14,12 +14,12 @@ use solana_program::{
 use borsh::{BorshDeserialize, BorshSerialize};
 
 // === CONSTANTS ===
-const DAILY_KWH_CAP: u64 = 9; // Max 9 kWh/day per device
-const BASE_REWARD_PER_KWH: u64 = 25_000_000; // 25 CARBON per kWh (8 decimals)
-const HALVING_INTERVAL: u64 = 1_051_200; // ~2 years
-const BASE_MARKET_CAP: u64 = 1_000_000_000_000; // $1M in smallest unit
-const MIN_REWARD_FACTOR: u64 = 50; // 0.5x
-const MAX_REWARD_FACTOR: u64 = 200; // 2.0x
+const DAILY_KWH_CAP: u64 = 1_500;               // Max 1.5 kWh/day per device (in milli-kWh)
+const BASE_REWARD_PER_KWH: u64 = 50_000_000;    // 0.5 CARBON per kWh (8 decimals)
+const HALVING_INTERVAL: u64 = 126_144_000;      // ~4 years in seconds
+const MIN_MARKET_CAP_THRESHOLD: u64 = 1_000_000_000_000;   // $1M in smallest unit
+const MIN_REWARD_FACTOR: u64 = 50;              // 0.5x
+const MAX_REWARD_FACTOR: u64 = 200;             // 2.0x
 
 // === DATA STRUCTURES ===
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
@@ -83,21 +83,33 @@ pub fn process_instruction(
         mining.last_mined_day = current_day;
     }
 
-    // Enforce 9 kWh/day cap
-    let allowed_kwh = (DAILY_KWH_CAP - mining.daily_kwh).min(kwh);
-    if allowed_kwh == 0 {
-        return Err(ProgramError::Custom(1)); // "Daily cap reached"
-    }
+    // Enforce 1.5 kWh/day cap (in milli-kWh)
+let cap_milli: u64 = DAILY_KWH_CAP; // 1_500 = 1.5 kWh
+let remaining_milli: u64 = cap_milli.saturating_sub(mining.daily_kwh_milli);
+let kwh_milli_input: u64 = (kwh * 1_000) as u64; // Convert input kWh → milli-kWh
+
+let allowed_milli = remaining_milli.min(kwh_milli_input);
+
+if allowed_milli == 0 {
+    return Err(ProgramError::Custom(1)); // "Daily cap reached"
+}
+
+// Update daily total
+mining.daily_kwh_milli = mining.daily_kwh_milli.saturating_add(allowed_milli);
 
     // === DYNAMIC REWARD ===
     let reward_rate = calculate_reward_rate(&state, market_cap);
     let reward = allowed_kwh * reward_rate;
 
-    // === HALVING ===
-    if clock.slot - state.last_halving_block >= HALVING_INTERVAL {
-        state.base_reward /= 2;
-        state.last_halving_block = clock.slot;
-    }
+    // === HALVING (Every 4 Years) ===
+let current_time = clock.unix_timestamp;
+let years_since_launch = (current_time - state.genesis_timestamp) / 31_536_000; // 365 days
+
+let expected_epoch = years_since_launch / 4;
+if expected_epoch > state.current_epoch {
+    state.base_reward = state.base_reward / 2u64.pow((expected_epoch - state.current_epoch) as u32);
+    state.current_epoch = expected_epoch;
+}
 
     // === PAYOUT ===
     transfer_tokens(token_acc, user_wallet, reward)?;
