@@ -83,6 +83,10 @@ python examples1/run_solana.py
 - Data residency: EU only
 - Right to be forgotten: Soft delete + 30 day retention
 
+Whitepaper and Roadmap:
+
+https://github.com/lifebricksglobal/CarbonSmartMeter/blob/afc739b8e4af17521655b699f3c4304aac6267a7/Carbon%20Smart%20Meter/docs/Whitepaper_RoadMap
+
 Built by Carbon Credits Marketplace (CCM)  
 Powered by rewards  
 Anchored in real offsets  
