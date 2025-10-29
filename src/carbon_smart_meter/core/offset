@@ -2,7 +2,7 @@
 """
 Offset Estimation Engine (Privacy First, Global Coverage)
 
-GDPR & MiCA compliant: Primary storage in AWS (EU or SG), encrypted Azure backup.
+GDPR & MiCA compliant storage: Primary storage in AWS (EU or SG), encrypted Azure backup.
 
 Estimates CO₂ avoided using verified kWh + region specific grid intensity.
 - NO GPS: User selects region via dropdown
