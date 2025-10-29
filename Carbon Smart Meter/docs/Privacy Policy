@@ -1,0 +1,46 @@
+Carbon Credits Marketplace (CCM) is committed to zero personal data collection and maximum privacy in the 
+Carbon Smart Meter DePIN.
+
+1. No Personal Data Collected
+- No name, email, KYC, or identity required to participate.
+- No location tracking, region inferred only from grid intensity oracle (public data).
+- No wallet user linkage, wallet addresses are pseudonymous.
+- Wallets are self custodial. CCM never holds, accesses, or manages user funds or private keys
+
+2. What We Do Collect (On-Chain & Anonymized)
+- Device ID + kWh     
+- Grid intensity factor
+- Aggregated Renewable Energy (RE) stats.
+
+3. RE Data – Fully Anonymized
+- kWh per region/hour
+- Solar uptime trends
+- CO₂e avoided per grid
+- Device density maps
+
+4. Security, Data Storage & Compliance
+- Physical connection required to operate the system
+- EU-only data residency (AWS S3 eu-west-1, AES-256)
+- Encrypted backup (Azure Blob)
+- Right to be forgotten: Soft delete + 30-day retention
+
+5. Wallet & On-Chain Privacy
+- Device and wallet binding prevents spoofing
+- No wallet to user linkage, addresses are pseudonymous
+- Wallets are self custodial. Generated in browser or via the user’s wallet app  
+- Private keys never leave the user’s device. CCM has zero access.  
+- Rewards sent directly to user wallet — no intermediary.
+
+6. Third Parties
+- Oracles: Pyth, Ember, IEA (public grid data)
+- DEXs: Raydium, Jupiter, Uniswap (user-initiated swaps)
+
+7. Your Rights
+- Delete your device: Unbond wallet, data erased in 30 days
+- Export: Download your on-chain kWh history (anonymized)
+
+Contact: [data@lifebricksglobal.com] 
+
+This policy is built on privacy by design principles and complies with international data protection laws as applicable.
+
+
