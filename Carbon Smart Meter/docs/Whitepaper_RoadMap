@@ -55,14 +55,14 @@ Technology Stack
 Hardware (Field Tested)
 
 → 20W–100W foldable panels 
-→ VIR Sensor (Voltage × Current × Resistance → kWh, <1% error)
+→ VIR Sensor (Voltage × Current × Resistance → kWh)
 → Tamper proof USB-C / Type-C / 12V adapter
 → Smartphone/tablet as wallet and app host
 
 Software (Open Source – Apache-2.0)
 
 - Web App: [kWh → CO₂e] using region specific grid intensity. Where [kWh → CO₂e] = How much CO₂ equivalent greenhouse 
-gas is avoided when 1 kWh of solar energy replaces dirty grid power. Example: using a Conservative default: 0.4 kg CO₂e/kWh,
+gas is avoided when 1 kWh of solar energy replaces dirty grid power.
 - Smart Contracts:
 → Primary: Reward Token emission with 2 yearly halving logic
 → Secondary: wCARBON minting → CCM Treasury only for institutional client certification via OTC transactions.
@@ -83,9 +83,9 @@ Architecture (Visual Pipeline)
 
 Sustainable Payout Model
 
-- Cap: 3 kWh/day per device
+- Cap: 1.5 kWh/day per device
 - Rewards: 1.5–8% of regional electricity price (paid in assigned project Rewards Token)
-- Early Scaling: 1.5× multiplier for first 5,000 devices
+- Early Scaling: 1.5× multiplier for first 1,000 devices
 - Revenue Streams:
   → Hardware margin
   → Offset brokerage (2–5%)
@@ -110,15 +110,15 @@ Rewards Emissions (Halving Every 4 Years)
 
 → The rewards emission is inverse to the rewards token Market Cap value whereby early users earn more, with 
 fewer rewards paid out as the market cap increases.
-→ Epoch = a time based halving cycle where early miners win more and with infinite halving cycles.
+→ Epoch = a time based halving cycle where early miners win more and with near infinite halving cycles.
 
 Daily Rewards Cap
 
 1.5 kWh/device → max 0.75 Rewards Token/day (high price region)
-- Fixed rate: 0.5 $CARBON/kWh (Epoch 0)  
+- Fixed rate: 0.5 $Reward Token/kWh (Epoch 0)  
 
 Allocation (1B Total Supply)
-- Mining Rewards: 60% (600M) — halving every 4 years open to all Carbon Smart Meter operators  
+- Mining Rewards: 60% (600M) — with token earnings halving every 4 years. This pool open to all Carbon Smart Meter operators  
 - Team & Founders: 15% (150M) — 4-yr vest, 1-yr cliff  
 - Operations Treasury: 20% (200M) — immediate cash for events, travel, deals and relationships  
 - Ecosystem Fund: 3% (30M) — governance  
@@ -126,11 +126,11 @@ Allocation (1B Total Supply)
 (e.g., Raydium, Uniswap) over time.
 
 
-Operations Treasury funds real world growth. Mining allocation remains dominant and staked, until rewards unlock thresholds are met.
+Operations Treasury funds real world growth. Mining allocation remains staked ntil rewards unlock thresholds are met.
 
 Miner Options at Reward Threshold
 
-1) Hold Rewards Token (governance + market upside)
+1) Hold Rewards Token (governance + potential market upside)
 2) Stake Rewards Token (boost mining yields)
 3) Swap on DEXs  for BTC, ETH, SOL, USDT, USDC, or any liquidity paired token.
 
@@ -202,13 +202,13 @@ Q4 2025 – Launch
 → Early users: 1.5× rewards = the first 1,000 devices get 50% extra Rewards for all kWh mined on that device. 
   This is on-chain, automatic and device locked.
 
-Q1 2026 – Multi-Chain & Retrofit Device Launch
+Q1 2026 – Multi Chain & Retrofit Device Launch
 
 →  Ethereum L2, Polkadot, Cosmos among others
 →  Universal Retrofit Kit launch
 →  First wCARBON minted to treasury
 →  Airline trials begin
-→  Aim to begin distributing 5,000 units across Europe, Africa and South America. Population densities equate to shorter sales cycles.
+→  Aim to begin distributing 5,000 units across South East Asia, Africa, North and South America. Population densities equate to shorter sales cycles.
 →  Global kWh + CO₂ map dashboard launched on refreshed Carbon Smart Meter website.
 
 Q2 2026 – Gold Standard & Scale
@@ -271,7 +271,6 @@ Built for Scale.
 → Retrofit line in development
 
 Built by Carbon Credits Marketplace (CCM)
-Powered by $CARBON rewards. Anchored in wCARBON treasury. Designed for global adoption.
-User Rewards: Sun earned. wCARBON: Real carbon. Built to last.
+Powered by on-chain rewards and designed for global adoption.
 
 
