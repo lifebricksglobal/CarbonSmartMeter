@@ -1,13 +1,21 @@
 # Carbon Smart Meter v1 October 2025 - A lot has changed during our 30 day sprint.
 
 => We identified who our ideal customers are
+
 => We defined the application and use of the Carbon Smart Meter
+
 => Confirmed backend design
+
 => Confirmed where and who can manufacture the meter
+
 => Identified ideal use case being industrial applications
+
 => We have updated the pitch deck to show a systems diagram flow path
+
 => Idea has been validated by CEO and founder of a competing product; we are building what he is shipping, an idea he used to raise $30M in 2 years
+
 => Idea has been validated by Coinbase, Pyth, Polkadot and Chainlink employees 
+
 => Our point of difference is we are compatible with all renewable energy not just solar.
 
 At Carbon Credits Marketplace we broker the transparent purchase and retiring of verified carbon credits, both on-chain and in the real world. Our flagship innovation, the Carbon Smart Meter, transforms portable solar panels into verifiable offset devices. Capturing real time energy data, estimating avoided emissions, and triggering smart contract rewards. This positions CCM at the intersection of decentralized physical infrastructure (DePIN), climate finance, and on chain utility.
